@@ -3,14 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Le navigateur peint son fond dans le bon régime avant même que la
-         feuille de style soit lue : pas d'éclair blanc à l'ouverture. -->
     <meta name="color-scheme" content="light dark" />
     <title>ego/nux</title>
     <meta name="description" content="Les projets du FabLab de l'Atelier Partagé de La Traverse." />
 
     <script>
-      // Avant tout rendu : rétablir le choix mémorisé, s'il existe.
       try {
         var choix = localStorage.getItem("theme")
         if (choix === "dark" || choix === "light") {
@@ -20,7 +17,6 @@
     </script>
 
     <style>
-      /* Mêmes polices auto-hébergées que fablab.egonux.com. */
       @font-face {
         font-family: "JetBrains Mono";
         font-weight: 700;
@@ -43,10 +39,6 @@
         --rouge-vif: #f44336;
       }
 
-      /* Trois états : sans choix explicite on suit le système ; un choix
-         mémorisé pose data-theme sur la racine et l'emporte dans les deux
-         sens. La palette sombre est donc écrite deux fois, jamais définie
-         seulement dans la requête média. */
       @media (prefers-color-scheme: dark) {
         :root:not([data-theme="light"]) {
           --papier: #1c1b19;
@@ -86,21 +78,9 @@
         -webkit-font-smoothing: antialiased;
       }
 
-      /* --------------------------------------------------------------------
-         Les trois logotypes
-
-         Traitement identique pour les trois — accolades en accent, section en
-         capitales sous la marque — parce que ce sont trois pans d'une même
-         maison. Seul le nom les distingue : ni cadre, ni aplat, ni réaction au
-         survol ne viennent hiérarchiser ce qui ne l'est pas.
-         -------------------------------------------------------------------- */
-
       .projets {
         display: flex;
         flex-direction: column;
-        /* Alignés par la droite : les accolades fermantes tombent sur une
-           même verticale malgré des noms de longueurs différentes, et les
-           sections avec elles. */
         align-items: flex-end;
         gap: 2.2rem;
         margin: 0;
@@ -125,9 +105,6 @@
         font-weight: 700;
       }
 
-      /* Aucun effet au survol : les trois noms se suffisent. Le focus, lui,
-         reste visible — sans quoi la navigation au clavier avancerait à
-         l'aveugle d'un lien à l'autre. */
       .logo:focus-visible {
         outline: 2px solid var(--rouge);
         outline-offset: 0.35em;
@@ -137,7 +114,6 @@
       .logo .pile {
         display: flex;
         flex-direction: column;
-        /* La pile prend la largeur de son plus large enfant, la marque. */
         align-items: stretch;
       }
 
@@ -145,31 +121,15 @@
         white-space: nowrap;
       }
 
-      /* La section se cale à droite de la marque, moins la largeur d'une
-         accolade : sa dernière lettre tombe ainsi sous la dernière lettre du
-         nom, juste avant le }. Le retrait vaut une chasse de la marque —
-         0,58em, chasse de la police moins la lettre-espacement — converti
-         dans l'unité de la section, qui est 0,56 fois plus petite. */
       .logo .section {
-        /* La graisse normale, seule autre variante auto-hébergée : la section
-           se distingue de la marque par le trait autant que par la couleur. */
         font-weight: 400;
         font-size: 0.56em;
         letter-spacing: 0.08em;
         color: var(--anthracite);
 
-        /* La boîte épouse le texte — largeur ajustée au contenu, interligne
-           ramené à 1 — puis se cale à droite. Le décalage d'une accolade passe
-           par la marge et non le remplissage : le fond ne doit pas s'étendre
-           au-delà des lettres. */
         width: fit-content;
         margin: 0.1em calc(0.58em / 0.56) 0 auto;
 
-        /* Surlignage repris du chapeau des fiches de fablab.egonux.com : un
-           fond uni couvrirait toute la zone de contenu de la police, bien plus
-           haute que les lettres. On peint donc une tranche — de 14 % à 86 % de
-           la boîte — qui s'arrête au sommet des capitales et à la ligne de
-           base, comme un trait de surligneur. */
         --surlignage: color-mix(in srgb, var(--rouge-vif) 60%, transparent);
         line-height: 1;
         background-image: linear-gradient(
@@ -181,13 +141,8 @@
         );
       }
 
-      /* Sur le rouge soutenu du thème sombre, le texte clair ne tiendrait pas
-         le contraste : il repasse à la couleur du fond de page. Même arbitrage
-         que sur les fiches. */
       @media (prefers-color-scheme: dark) {
         :root:not([data-theme="light"]) .logo .section {
-          /* Opaque : à travers une transparence, le fond noir de la page
-             assombrirait le rouge au point d'y noyer le texte. */
           --surlignage: var(--rouge-vif);
           color: var(--papier);
         }
@@ -197,14 +152,6 @@
         --surlignage: var(--rouge-vif);
         color: var(--papier);
       }
-
-      /* --------------------------------------------------------------------
-         Bascule clair / sombre
-
-         Le choix est mémorisé ; sans choix, la page suit le système. L'icône
-         montre le régime vers lequel on bascule, ce qui suppose de couvrir
-         les trois états comme la palette.
-         -------------------------------------------------------------------- */
 
       .bascule {
         display: flex;
@@ -350,7 +297,6 @@
     <script>
       document.querySelector(".bascule").addEventListener("click", function () {
         var racine = document.documentElement
-        // Sans choix mémorisé, le régime courant est celui du système.
         var sombre = racine.dataset.theme
           ? racine.dataset.theme === "dark"
           : window.matchMedia("(prefers-color-scheme: dark)").matches
