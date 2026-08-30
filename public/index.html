@@ -242,23 +242,32 @@
         0% {
           transform: translate(0, 0) rotate(0deg) scale(1);
         }
-        12% {
-          transform: translate(-6px, 3px) rotate(-9deg) scale(1.08);
+        10% {
+          transform: translate(-7px, 4px) rotate(-12deg) scale(1.1);
         }
-        26% {
-          transform: translate(6px, -4px) rotate(8deg) scale(1.05);
+        20% {
+          transform: translate(9px, -5px) rotate(13deg) scale(1.14);
+        }
+        30% {
+          transform: translate(-10px, 4px) rotate(-14deg) scale(1.16);
         }
         40% {
-          transform: translate(-5px, -3px) rotate(-7deg) scale(1.04);
+          transform: translate(10px, -5px) rotate(12deg) scale(1.16);
         }
-        54% {
-          transform: translate(4px, 3px) rotate(6deg) scale(1.03);
+        50% {
+          transform: translate(-8px, 5px) rotate(-10deg) scale(1.12);
         }
-        68% {
-          transform: translate(-3px, 2px) rotate(-4deg) scale(1.02);
+        60% {
+          transform: translate(7px, -4px) rotate(9deg) scale(1.08);
         }
-        82% {
-          transform: translate(2px, -1px) rotate(2deg) scale(1.01);
+        70% {
+          transform: translate(-5px, 3px) rotate(-6deg) scale(1.05);
+        }
+        80% {
+          transform: translate(4px, -2px) rotate(4deg) scale(1.03);
+        }
+        90% {
+          transform: translate(-2px, 1px) rotate(-2deg) scale(1.01);
         }
         100% {
           transform: translate(0, 0) rotate(0deg) scale(1);
@@ -266,13 +275,7 @@
       }
 
       .glyphe.tremble {
-        animation: soubresaut 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .glyphe.tremble {
-          animation: none;
-        }
+        animation: soubresaut 0.3s linear;
       }
 
       footer {
@@ -384,11 +387,13 @@
           do {
             suivant = glyphes[Math.floor(Math.random() * glyphes.length)]
           } while (suivant === cible.textContent)
-          cible.textContent = suivant
           cible.classList.remove("tremble")
           void cible.offsetWidth
           cible.classList.add("tremble")
-          setTimeout(changer, 700 + Math.random() * 1100)
+          setTimeout(function () {
+            cible.textContent = suivant
+          }, 90)
+          setTimeout(changer, 900 + Math.random() * 1200)
         }
         setTimeout(changer, 900)
       })()
