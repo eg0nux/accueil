@@ -16,13 +16,14 @@ brancher un domaine personnalisé passe obligatoirement par le tableau de bord,
 alors qu'un Worker déclare sa route dans sa configuration — donc depuis la
 ligne de commande.
 
-- GitHub Actions publie à chaque poussée sur `main`, via les secrets
-  `CLOUDFLARE_API_TOKEN` et `CLOUDFLARE_ACCOUNT_ID` du dépôt
-- À la main, au besoin :
+Publication à la main, quand la page change — ce qui est rare :
 
 ```sh
 npx wrangler deploy
 ```
+
+Pas de workflow GitHub Actions ici, délibérément : il aurait fallu y dupliquer
+le jeton d'API Cloudflare pour automatiser une page qui bouge deux fois l'an.
 
 ## Charte
 
