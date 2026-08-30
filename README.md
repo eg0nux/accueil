@@ -41,5 +41,5 @@ un choix contraire dans le stockage local.
 `egonux.com` sert cette page depuis le 2026-08-30 ; `www.egonux.com` y arrive
 par une redirection 301 vers l'apex. Un Worker nommé `site`, téléversé le
 2026-05-27, servait auparavant une page « Bientôt. » — son rendu est archivé
-dans `P:\Egonuxccueil\page-precedente-bientot.html`. Il n'a pas été
+dans `P:/Egonux/accueil/page-precedente-bientot.html`. Il n'a pas été
 supprimé, seulement dépossédé de la route.
