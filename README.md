@@ -10,14 +10,18 @@ fichier HTML autonome, sans dépendance de construction.
 
 ## Publication
 
-- Cloudflare Pages : projet `accueil-egonux`, **envoi direct** (pas
-  d'intégration Git côté Cloudflare)
+Un **Worker sans code** qui ne sert que `public/` : `egonux-accueil`, routé sur
+`egonux.com/*` (voir `wrangler.jsonc`). Pages aurait fait l'affaire, mais y
+brancher un domaine personnalisé passe obligatoirement par le tableau de bord,
+alors qu'un Worker déclare sa route dans sa configuration — donc depuis la
+ligne de commande.
+
 - GitHub Actions publie à chaque poussée sur `main`, via les secrets
-  `CLOUDFLARE_API_TOKEN` et `CLOUDFLARE_ACCOUNT_ID`
+  `CLOUDFLARE_API_TOKEN` et `CLOUDFLARE_ACCOUNT_ID` du dépôt
 - À la main, au besoin :
 
 ```sh
-npx wrangler pages deploy public --project-name=accueil-egonux --branch=main
+npx wrangler deploy
 ```
 
 ## Charte
@@ -34,6 +38,8 @@ un choix contraire dans le stockage local.
 
 ## Domaine
 
-`www.egonux.com` redirige en 301 vers l'apex. Attention : une route de Worker
-sur `egonux.com/*` prime sur Pages — elle doit être retirée avant que le
-domaine personnalisé serve cette page.
+`egonux.com` sert cette page depuis le 2026-08-30 ; `www.egonux.com` y arrive
+par une redirection 301 vers l'apex. Un Worker nommé `site`, téléversé le
+2026-05-27, servait auparavant une page « Bientôt. » — son rendu est archivé
+dans `P:\Egonuxccueil\page-precedente-bientot.html`. Il n'a pas été
+supprimé, seulement dépossédé de la route.

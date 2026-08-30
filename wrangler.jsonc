@@ -1,0 +1,17 @@
+{
+  // Worker sans code : il ne sert que le dossier public/. Cloudflare Pages
+  // aurait fait l'affaire, mais brancher un domaine personnalisé sur un
+  // projet Pages passe obligatoirement par le tableau de bord, alors qu'un
+  // Worker déclare sa route ici même.
+  "name": "egonux-accueil",
+  "compatibility_date": "2026-08-30",
+  "assets": {
+    "directory": "./public"
+  },
+  "routes": [
+    {
+      "pattern": "egonux.com/*",
+      "zone_name": "egonux.com"
+    }
+  ]
+}

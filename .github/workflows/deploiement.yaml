@@ -1,8 +1,9 @@
-# Publie la page d'accueil sur Cloudflare Pages à chaque poussée.
+# Publie la page d'accueil à chaque poussée.
 #
-# Rien à construire : le dossier public/ est le site. On le pousse tel quel,
-# avec un jeton d'API plutôt que par l'intégration Git de Cloudflare — celle-ci
-# mémorise l'identifiant GitHub du dépôt et ne survit pas à sa recréation.
+# Rien à construire : le dossier public/ est le site, servi tel quel par un
+# Worker sans code (voir wrangler.jsonc). Ce n'est pas un projet Pages : y
+# brancher un domaine personnalisé passe obligatoirement par le tableau de
+# bord, là où un Worker déclare sa route dans sa configuration.
 
 name: Déploiement
 
@@ -21,4 +22,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy public --project-name=accueil-egonux --branch=main
+          command: deploy
