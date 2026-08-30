@@ -209,6 +209,59 @@
         display: block;
       }
 
+      .glyphe {
+        font-size: clamp(2.6rem, 9vw, 4.4rem);
+        font-weight: 700;
+        line-height: 1;
+        color: var(--rouge);
+        user-select: none;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .glyphe {
+          color: var(--encre);
+        }
+      }
+
+      :root[data-theme="dark"] .glyphe {
+        color: var(--encre);
+      }
+
+      :root[data-theme="light"] .glyphe {
+        color: var(--rouge);
+      }
+
+      @keyframes soubresaut {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        20% {
+          transform: translate(-2px, 1px) rotate(-3deg);
+        }
+        40% {
+          transform: translate(2px, -1px) rotate(3deg);
+        }
+        60% {
+          transform: translate(-1px, -1px) rotate(-2deg);
+        }
+        80% {
+          transform: translate(1px, 1px) rotate(1deg);
+        }
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+      }
+
+      .glyphe.tremble {
+        animation: soubresaut 0.36s ease-in-out;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .glyphe.tremble {
+          animation: none;
+        }
+      }
+
       footer {
         position: absolute;
         bottom: 2rem;
@@ -290,6 +343,8 @@
       </svg>
     </button>
 
+    <div class="glyphe" aria-hidden="true">#</div>
+
     <footer>
       <p>© 2026</p>
       <p><a href="mailto:florian@egonux.com">Florian</a></p>
@@ -306,6 +361,24 @@
           localStorage.setItem("theme", voulu)
         } catch (e) {}
       })
+    </script>
+    <script>
+      ;(function () {
+        var glyphes = ["{", "/", "#", "&"]
+        var cible = document.querySelector(".glyphe")
+        function changer() {
+          var suivant
+          do {
+            suivant = glyphes[Math.floor(Math.random() * glyphes.length)]
+          } while (suivant === cible.textContent)
+          cible.textContent = suivant
+          cible.classList.remove("tremble")
+          void cible.offsetWidth
+          cible.classList.add("tremble")
+          setTimeout(changer, 700 + Math.random() * 1100)
+        }
+        setTimeout(changer, 900)
+      })()
     </script>
   </body>
 </html>

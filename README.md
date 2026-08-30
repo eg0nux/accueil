@@ -37,6 +37,16 @@ le bloc restant centré dans la page.
 Le thème suit le réglage du système ; la bascule sous les logotypes mémorise
 un choix contraire dans le stockage local.
 
+Entre la bascule et le pied de page, un glyphe tiré au sort parmi `{ / # &`
+change toutes les une à deux secondes avec un bref soubresaut — le même
+tremblement que le logo de La Traverse au survol, sur fablab.egonux.com. Il
+est rouge en thème clair, crème en sombre, et purement décoratif : `aria-hidden`
+l'écarte des lecteurs d'écran, et `prefers-reduced-motion` supprime le
+tremblement pour qui a demandé moins d'animations.
+
+Le fichier ne porte aucun commentaire, délibérément : la page est publique et
+sa source se lit d'un coup d'œil. Les choix sont expliqués ici.
+
 ## Domaine
 
 `egonux.com` sert cette page depuis le 2026-08-30 ; `www.egonux.com` y arrive
