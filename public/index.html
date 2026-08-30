@@ -40,6 +40,7 @@
         --rouge: #d32f2f;
         --gris: #8c8578;
         --anthracite: #38352f;
+        --rouge-vif: #f44336;
       }
 
       /* Trois états : sans choix explicite on suit le système ; un choix
@@ -53,6 +54,7 @@
           --rouge: #f4675c;
           --gris: #7d786d;
           --anthracite: #ded8cc;
+          --rouge-vif: #f4675c;
         }
       }
 
@@ -62,6 +64,7 @@
         --rouge: #f4675c;
         --gris: #7d786d;
         --anthracite: #ded8cc;
+        --rouge-vif: #f4675c;
       }
 
       * {
@@ -151,12 +154,48 @@
         /* La graisse normale, seule autre variante auto-hébergée : la section
            se distingue de la marque par le trait autant que par la couleur. */
         font-weight: 400;
-        text-align: right;
-        padding-right: calc(0.58em / 0.56);
-        margin-top: 0.1em;
         font-size: 0.56em;
         letter-spacing: 0.08em;
         color: var(--anthracite);
+
+        /* La boîte épouse le texte — largeur ajustée au contenu, interligne
+           ramené à 1 — puis se cale à droite. Le décalage d'une accolade passe
+           par la marge et non le remplissage : le fond ne doit pas s'étendre
+           au-delà des lettres. */
+        width: fit-content;
+        margin: 0.1em calc(0.58em / 0.56) 0 auto;
+
+        /* Surlignage repris du chapeau des fiches de fablab.egonux.com : un
+           fond uni couvrirait toute la zone de contenu de la police, bien plus
+           haute que les lettres. On peint donc une tranche — de 14 % à 86 % de
+           la boîte — qui s'arrête au sommet des capitales et à la ligne de
+           base, comme un trait de surligneur. */
+        --surlignage: color-mix(in srgb, var(--rouge-vif) 60%, transparent);
+        line-height: 1;
+        background-image: linear-gradient(
+          180deg,
+          transparent 14%,
+          var(--surlignage) 14%,
+          var(--surlignage) 86%,
+          transparent 86%
+        );
+      }
+
+      /* Sur le rouge soutenu du thème sombre, le texte clair ne tiendrait pas
+         le contraste : il repasse à la couleur du fond de page. Même arbitrage
+         que sur les fiches. */
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .logo .section {
+          /* Opaque : à travers une transparence, le fond noir de la page
+             assombrirait le rouge au point d'y noyer le texte. */
+          --surlignage: var(--rouge-vif);
+          color: var(--papier);
+        }
+      }
+
+      :root[data-theme="dark"] .logo .section {
+        --surlignage: var(--rouge-vif);
+        color: var(--papier);
       }
 
       /* --------------------------------------------------------------------
