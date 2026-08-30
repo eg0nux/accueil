@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Le navigateur peint son fond dans le bon régime avant même que la
+         feuille de style soit lue : pas d'éclair blanc à l'ouverture. -->
+    <meta name="color-scheme" content="light dark" />
+    <title>ego/nux</title>
+    <meta name="description" content="Les projets du FabLab de l'Atelier Partagé de La Traverse." />
+
+    <script>
+      // Avant tout rendu : rétablir le choix mémorisé, s'il existe.
+      try {
+        var choix = localStorage.getItem("theme")
+        if (choix === "dark" || choix === "light") {
+          document.documentElement.dataset.theme = choix
+        }
+      } catch (e) {}
+    </script>
+
+    <style>
+      /* Mêmes polices auto-hébergées que fablab.egonux.com. */
+      @font-face {
+        font-family: "JetBrains Mono";
+        font-weight: 700;
+        font-display: swap;
+        src: url("/fonts/jetbrains-mono-700-latin.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        font-weight: 400;
+        font-display: swap;
+        src: url("/fonts/jetbrains-mono-400-latin.woff2") format("woff2");
+      }
+
+      :root {
+        --papier: #fafafa;
+        --encre: #212121;
+        --rouge: #d32f2f;
+        --gris: #8c8578;
+      }
+
+      /* Trois états : sans choix explicite on suit le système ; un choix
+         mémorisé pose data-theme sur la racine et l'emporte dans les deux
+         sens. La palette sombre est donc écrite deux fois, jamais définie
+         seulement dans la requête média. */
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --papier: #1c1b19;
+          --encre: #f6ece0;
+          --rouge: #f4675c;
+          --gris: #7d786d;
+        }
+      }
+
+      :root[data-theme="dark"] {
+        --papier: #1c1b19;
+        --encre: #f6ece0;
+        --rouge: #f4675c;
+        --gris: #7d786d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2.2rem;
+        padding: 5.5rem 2rem 7rem;
+        background: var(--papier);
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* --------------------------------------------------------------------
+         Les trois logotypes
+
+         Traitement identique pour les trois — accolades en accent, section en
+         capitales sous la marque — parce que ce sont trois pans d'une même
+         maison. Seul le nom les distingue : ni cadre, ni aplat, ni réaction au
+         survol ne viennent hiérarchiser ce qui ne l'est pas.
+         -------------------------------------------------------------------- */
+
+      .projets {
+        display: flex;
+        flex-direction: column;
+        /* Alignés par la droite : les accolades fermantes tombent sur une
+           même verticale malgré des noms de longueurs différentes, et les
+           sections avec elles. */
+        align-items: flex-end;
+        gap: 2.2rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 700;
+        font-size: clamp(1.5rem, 5vw, 2.4rem);
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        color: var(--encre);
+        text-decoration: none;
+      }
+
+      .logo b {
+        color: var(--rouge);
+        font-weight: 700;
+      }
+
+      /* Aucun effet au survol : les trois noms se suffisent. Le focus, lui,
+         reste visible — sans quoi la navigation au clavier avancerait à
+         l'aveugle d'un lien à l'autre. */
+      .logo:focus-visible {
+        outline: 2px solid var(--rouge);
+        outline-offset: 0.35em;
+        border-radius: 2px;
+      }
+
+      .logo .pile {
+        display: flex;
+        flex-direction: column;
+        /* La pile prend la largeur de son plus large enfant, la marque. */
+        align-items: stretch;
+      }
+
+      .logo .marque {
+        white-space: nowrap;
+      }
+
+      /* La section se cale à droite de la marque, moins la largeur d'une
+         accolade : sa dernière lettre tombe ainsi sous la dernière lettre du
+         nom, juste avant le }. Le retrait vaut une chasse de la marque —
+         0,58em, chasse de la police moins la lettre-espacement — converti
+         dans l'unité de la section, qui est 0,56 fois plus petite. */
+      .logo .section {
+        text-align: right;
+        padding-right: calc(0.58em / 0.56);
+        margin-top: 0.1em;
+        font-size: 0.56em;
+        letter-spacing: 0.08em;
+        color: var(--rouge);
+      }
+
+      /* --------------------------------------------------------------------
+         Bascule clair / sombre
+
+         Le choix est mémorisé ; sans choix, la page suit le système. L'icône
+         montre le régime vers lequel on bascule, ce qui suppose de couvrir
+         les trois états comme la palette.
+         -------------------------------------------------------------------- */
+
+      .bascule {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.9em;
+        height: 2.9em;
+        padding: 0;
+        font: inherit;
+        font-size: 0.9rem;
+        background: none;
+        border: none;
+        color: var(--gris);
+        cursor: pointer;
+        transition: color 0.18s;
+      }
+
+      .bascule:hover,
+      .bascule:focus-visible {
+        color: var(--rouge);
+        outline: none;
+      }
+
+      .bascule svg {
+        width: 1.4em;
+        height: 1.4em;
+      }
+
+      .bascule .soleil {
+        display: none;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .bascule .soleil {
+          display: block;
+        }
+        :root:not([data-theme="light"]) .bascule .lune {
+          display: none;
+        }
+      }
+
+      :root[data-theme="dark"] .bascule .soleil {
+        display: block;
+      }
+
+      :root[data-theme="dark"] .bascule .lune {
+        display: none;
+      }
+
+      :root[data-theme="light"] .bascule .soleil {
+        display: none;
+      }
+
+      :root[data-theme="light"] .bascule .lune {
+        display: block;
+      }
+
+      footer {
+        position: absolute;
+        bottom: 2rem;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.9rem;
+        padding: 0 1.5rem;
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--gris);
+      }
+
+      footer p {
+        margin: 0;
+      }
+
+      footer a {
+        color: var(--gris);
+        text-decoration: none;
+        border-bottom: 1px solid color-mix(in srgb, var(--gris) 45%, transparent);
+      }
+
+      footer a:hover {
+        color: var(--rouge);
+        border-bottom-color: var(--rouge);
+      }
+    </style>
+  </head>
+
+  <body>
+    <ul class="projets">
+      <li>
+        <a class="logo" href="https://fablab.egonux.com/"
+          ><span class="pile"><span class="marque"><b>{</b>fablab<b>}</b></span><span class="section">/DOC</span></span></a
+        >
+      </li>
+      <li>
+        <a class="logo" href="https://lab.egonux.com/"
+          ><span class="pile"><span class="marque"><b>{</b>fablab<b>}</b></span><span class="section">/PROJETS</span></span></a
+        >
+      </li>
+      <li>
+        <a class="logo" href="https://maquette.egonux.com/"
+          ><span class="pile"><span class="marque"><b>{</b>maquette<b>}</b></span><span class="section">/LATRAVERSE</span></span></a
+        >
+      </li>
+    </ul>
+
+    <button class="bascule" type="button" aria-label="Basculer entre le thème clair et le thème sombre">
+      <svg
+        class="soleil"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="4.2" />
+        <path
+          d="M12 2v2.6M12 19.4V22M4.2 4.2l1.9 1.9M17.9 17.9l1.9 1.9M2 12h2.6M19.4 12H22M4.2 19.8l1.9-1.9M17.9 6.1l1.9-1.9"
+        />
+      </svg>
+      <svg
+        class="lune"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" />
+      </svg>
+    </button>
+
+    <footer>
+      <p>© 2026</p>
+      <p><a href="mailto:florian@egonux.com">Florian</a></p>
+    </footer>
+    <script>
+      document.querySelector(".bascule").addEventListener("click", function () {
+        var racine = document.documentElement
+        // Sans choix mémorisé, le régime courant est celui du système.
+        var sombre = racine.dataset.theme
+          ? racine.dataset.theme === "dark"
+          : window.matchMedia("(prefers-color-scheme: dark)").matches
+        var voulu = sombre ? "light" : "dark"
+        racine.dataset.theme = voulu
+        try {
+          localStorage.setItem("theme", voulu)
+        } catch (e) {}
+      })
+    </script>
+  </body>
+</html>
