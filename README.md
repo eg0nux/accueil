@@ -37,10 +37,13 @@ le bloc restant centré dans la page.
 Le thème suit le réglage du système ; la bascule sous les logotypes mémorise
 un choix contraire dans le stockage local.
 
-Entre la bascule et le pied de page, un glyphe tiré au sort parmi `{ / # &`
+Entre la bascule et le pied de page, un glyphe tiré au sort parmi `{ } / \ # & *`
 change toutes les une à deux secondes avec un bref soubresaut — le même
-tremblement que le logo de La Traverse au survol, sur fablab.egonux.com. Il
-est rouge en thème clair, crème en sombre, et purement décoratif : `aria-hidden`
+tremblement que le logo de La Traverse au survol, sur fablab.egonux.com. Il est
+tramé — un masque en damier de 3 px couvrant 75 % — et épaissi par un contour
+plutôt que par une graisse de police supplémentaire, la famille n'étant
+auto-hébergée qu'en 400 et 700. Rouge en thème clair, crème en sombre, et
+purement décoratif : `aria-hidden`
 l'écarte des lecteurs d'écran, et `prefers-reduced-motion` supprime le
 tremblement pour qui a demandé moins d'animations.
 
