@@ -39,6 +39,7 @@
         --encre: #212121;
         --rouge: #d32f2f;
         --gris: #8c8578;
+        --anthracite: #38352f;
       }
 
       /* Trois états : sans choix explicite on suit le système ; un choix
@@ -51,6 +52,7 @@
           --encre: #f6ece0;
           --rouge: #f4675c;
           --gris: #7d786d;
+          --anthracite: #ded8cc;
         }
       }
 
@@ -59,6 +61,7 @@
         --encre: #f6ece0;
         --rouge: #f4675c;
         --gris: #7d786d;
+        --anthracite: #ded8cc;
       }
 
       * {
@@ -145,12 +148,15 @@
          0,58em, chasse de la police moins la lettre-espacement — converti
          dans l'unité de la section, qui est 0,56 fois plus petite. */
       .logo .section {
+        /* La graisse normale, seule autre variante auto-hébergée : la section
+           se distingue de la marque par le trait autant que par la couleur. */
+        font-weight: 400;
         text-align: right;
         padding-right: calc(0.58em / 0.56);
         margin-top: 0.1em;
         font-size: 0.56em;
         letter-spacing: 0.08em;
-        color: var(--rouge);
+        color: var(--anthracite);
       }
 
       /* --------------------------------------------------------------------
