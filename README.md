@@ -47,6 +47,9 @@ purement décoratif : `aria-hidden`
 l'écarte des lecteurs d'écran, et `prefers-reduced-motion` supprime le
 tremblement pour qui a demandé moins d'animations.
 
+Le pied de page sépare ses mentions par un croisillon rouge pâli — le motif
+des trois autres sites, où il ponctue sans attirer l'oeil.
+
 Le fichier ne porte aucun commentaire, délibérément : la page est publique et
 sa source se lit d'un coup d'œil. Les choix sont expliqués ici.
 
