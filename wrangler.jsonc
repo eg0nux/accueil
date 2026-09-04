@@ -6,7 +6,10 @@
   "name": "egonux-accueil",
   "compatibility_date": "2026-08-30",
   "assets": {
-    "directory": "./public"
+    "directory": "./public",
+    // Sans cette ligne, une adresse inconnue rend un 404 nu du runtime ;
+    // avec elle, c'est `public/404.html` qui est servi, avec son code 404.
+    "not_found_handling": "404-page"
   },
   "routes": [
     {

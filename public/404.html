@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>404 · ego/nux</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" sizes="any" />
+
+    <script>
+      try {
+        var choix = localStorage.getItem("theme")
+        if (choix === "dark" || choix === "light") {
+          document.documentElement.dataset.theme = choix
+        }
+      } catch (e) {}
+    </script>
+
+    <style>
+      @font-face {
+        font-family: "JetBrains Mono";
+        font-weight: 700;
+        font-display: swap;
+        src: url("/fonts/jetbrains-mono-700-latin.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        font-weight: 400;
+        font-display: swap;
+        src: url("/fonts/jetbrains-mono-400-latin.woff2") format("woff2");
+      }
+
+      :root {
+        --papier: #fafafa;
+        --encre: #212121;
+        --rouge: #d32f2f;
+        --gris: #8c8578;
+        --anthracite: #38352f;
+        --rouge-vif: #f44336;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --papier: #1c1b19;
+          --encre: #f6ece0;
+          --rouge: #f4675c;
+          --gris: #7d786d;
+          --anthracite: #ded8cc;
+          --rouge-vif: #f4675c;
+        }
+      }
+
+      :root[data-theme="dark"] {
+        --papier: #1c1b19;
+        --encre: #f6ece0;
+        --rouge: #f4675c;
+        --gris: #7d786d;
+        --anthracite: #ded8cc;
+        --rouge-vif: #f4675c;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.6rem;
+        padding: 5.5rem 2rem 7rem;
+        background: var(--papier);
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        -webkit-font-smoothing: antialiased;
+        /* Les pixels morts et les tranches débordent du texte : on les
+           contient plutôt que de donner un ascenseur à la page. */
+        overflow: hidden;
+      }
+
+      /* ----------------------------------------------------------------
+         404 : la page est cassée, elle le montre
+
+         Même parti pris que sur fablab.egonux.com et lab.egonux.com : le
+         nombre tressaute, se dédouble en rouge et en jaune comme un défaut
+         de repérage d'impression, et des pixels morts sautillent
+         par-dessus. C'est le soubresaut du glyphe, poussé jusqu'à la panne
+         franche.
+
+         Les cadences sont premières entre elles — 0,7 s, 1,1 s et 2,3 s —
+         et ne retombent ensemble qu'au bout de dix-sept secondes.
+
+         Tout est en `steps(1, end)` : un glitch ne glisse pas, il saute.
+         ---------------------------------------------------------------- */
+
+      .panne {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.4rem;
+        text-align: center;
+      }
+
+      /* Le semis de pixels morts : quatre trames de points de 2 px aux pas
+         premiers entre eux (41×29, 67×43, 53×71 et 89×37), qui ne se
+         superposent donc jamais deux fois de la même façon. Posé au-dessus
+         du texte, il ne prend pas le clic : le lien reste atteignable. */
+      .panne::after {
+        content: "";
+        position: absolute;
+        inset: -3rem -4rem;
+        pointer-events: none;
+        z-index: 2;
+        background-image:
+          radial-gradient(circle, var(--encre) 0 1px, transparent 1.2px),
+          radial-gradient(circle, var(--rouge) 0 1px, transparent 1.2px),
+          radial-gradient(circle, var(--encre) 0 1px, transparent 1.2px),
+          radial-gradient(circle, var(--rouge-vif) 0 1px, transparent 1.2px);
+        background-size:
+          41px 29px,
+          67px 43px,
+          53px 71px,
+          89px 37px;
+        animation: pixels-morts 0.7s steps(1, end) infinite;
+      }
+
+      .nombre {
+        position: relative;
+        font-weight: 700;
+        font-size: clamp(4.5rem, 22vw, 9rem);
+        line-height: 1;
+        letter-spacing: 0.04em;
+        color: var(--encre);
+        user-select: none;
+        animation: secousse 0.7s steps(1, end) infinite;
+      }
+
+      /* Le calque du dédoublement, découpé en tranches horizontales qui se
+         déplacent : la déchirure d'un signal qui perd la ligne. */
+      .nombre::after {
+        content: "404";
+        position: absolute;
+        inset: 0;
+        animation:
+          tranches 1.1s steps(1, end) infinite,
+          reperage 0.7s steps(1, end) infinite;
+      }
+
+      .phrase {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        max-width: 22em;
+        font-size: clamp(0.95rem, 3.4vw, 1.05rem);
+        line-height: 1.7;
+        color: var(--anthracite);
+        /* La ligne dérive de deux pixels et trois fois moins souvent : la
+           panne est dans le nombre, pas dans la phrase. */
+        animation: derive 2.3s steps(1, end) infinite;
+      }
+
+      /* Le retour : la bande de la section du logotype, à l'identique — 60 %
+         du rouge vif, texte à l'anthracite. Sur fond sombre le rouge est pris
+         plein et le texte passe au papier, qui y est le noir de la page. */
+      .retour {
+        position: relative;
+        z-index: 1;
+        --surlignage: color-mix(in srgb, var(--rouge-vif) 60%, transparent);
+        padding: 0.25em 0.5em;
+        font-size: clamp(0.85rem, 3vw, 0.95rem);
+        letter-spacing: 0.04em;
+        line-height: 1.5;
+        color: var(--anthracite);
+        text-decoration: none;
+        background-color: var(--surlignage);
+        animation: secousse 1.1s steps(1, end) infinite;
+      }
+
+      .retour:hover,
+      .retour:focus-visible {
+        --surlignage: var(--rouge-vif);
+        outline: none;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .retour {
+          --surlignage: var(--rouge-vif);
+          color: var(--papier);
+        }
+      }
+
+      :root[data-theme="dark"] .retour {
+        --surlignage: var(--rouge-vif);
+        color: var(--papier);
+      }
+
+      /* Le tremblement, aux teintes du soubresaut de fablab : rouge et jaune
+         écrits en dur, ils valent pour les deux thèmes. Les deux tiers du
+         tour sont immobiles — une panne qui ne s'arrête jamais n'est plus
+         une panne, c'est une texture. */
+      @keyframes secousse {
+        0%,
+        62% {
+          transform: translate(0, 0);
+          filter: none;
+        }
+        66% {
+          transform: translate(-3px, 1px);
+          filter: drop-shadow(3px 0 #f44336) drop-shadow(-3px 0 #eddd6e);
+        }
+        70% {
+          transform: translate(3px, -2px);
+          filter: drop-shadow(-4px 0 #f44336);
+        }
+        74% {
+          transform: translate(-1px, 2px);
+          filter: drop-shadow(2px 1px #eddd6e);
+        }
+        78% {
+          transform: translate(2px, 0);
+          filter: none;
+        }
+        86% {
+          transform: translate(-2px, -1px);
+          filter: drop-shadow(4px 0 #f44336) drop-shadow(-2px 0 #eddd6e);
+        }
+        92% {
+          transform: translate(1px, 1px);
+          filter: none;
+        }
+        100% {
+          transform: translate(0, 0);
+          filter: none;
+        }
+      }
+
+      /* `clip-path` ne garde qu'une tranche du calque, et la tranche se
+         déplace latéralement. Le reste du temps, un `inset` de 100 % par le
+         haut ne laisse rien voir. */
+      @keyframes tranches {
+        0%,
+        20% {
+          clip-path: inset(100% 0 0 0);
+          transform: translate(0, 0);
+        }
+        24% {
+          clip-path: inset(12% 0 74% 0);
+          transform: translate(-9px, 0);
+        }
+        28% {
+          clip-path: inset(43% 0 41% 0);
+          transform: translate(7px, 0);
+        }
+        32% {
+          clip-path: inset(66% 0 19% 0);
+          transform: translate(-5px, 0);
+        }
+        36%,
+        54% {
+          clip-path: inset(100% 0 0 0);
+          transform: translate(0, 0);
+        }
+        58% {
+          clip-path: inset(28% 0 58% 0);
+          transform: translate(11px, 0);
+        }
+        62% {
+          clip-path: inset(78% 0 8% 0);
+          transform: translate(-8px, 0);
+        }
+        66%,
+        100% {
+          clip-path: inset(100% 0 0 0);
+          transform: translate(0, 0);
+        }
+      }
+
+      /* Le défaut de repérage : le calque vire au rouge puis au jaune, sur
+         une cadence qui n'est pas celle des tranches — deux pannes
+         distinctes. */
+      @keyframes reperage {
+        0%,
+        100% {
+          color: var(--rouge);
+        }
+        50% {
+          color: #eddd6e;
+        }
+      }
+
+      /* Les pixels morts sautillent : chaque trame change de position à
+         chaque pas et ne parcourt pas les mêmes distances. Deux images sur
+         huit les éteignent toutes — l'écran se rattrape, puis repart. */
+      @keyframes pixels-morts {
+        0% {
+          opacity: 0.55;
+          background-position:
+            0 0,
+            0 0,
+            0 0,
+            0 0;
+        }
+        12% {
+          opacity: 0.7;
+          background-position:
+            13px 7px,
+            -21px 11px,
+            8px -17px,
+            -31px 5px;
+        }
+        25% {
+          opacity: 0;
+          background-position:
+            13px 7px,
+            -21px 11px,
+            8px -17px,
+            -31px 5px;
+        }
+        37% {
+          opacity: 0.8;
+          background-position:
+            -7px 19px,
+            33px -9px,
+            -19px 23px,
+            17px -13px;
+        }
+        50% {
+          opacity: 0.45;
+          background-position:
+            23px -11px,
+            -5px 27px,
+            31px 9px,
+            -9px 21px;
+        }
+        62% {
+          opacity: 0.75;
+          background-position:
+            -17px 3px,
+            19px 15px,
+            -27px -5px,
+            37px 11px;
+        }
+        75% {
+          opacity: 0;
+          background-position:
+            -17px 3px,
+            19px 15px,
+            -27px -5px,
+            37px 11px;
+        }
+        87% {
+          opacity: 0.6;
+          background-position:
+            29px 13px,
+            -13px -19px,
+            11px 31px,
+            -23px -7px;
+        }
+        100% {
+          opacity: 0.55;
+          background-position:
+            0 0,
+            0 0,
+            0 0,
+            0 0;
+        }
+      }
+
+      @keyframes derive {
+        0%,
+        88% {
+          transform: translate(0, 0);
+        }
+        90% {
+          transform: translate(-2px, 0);
+        }
+        93% {
+          transform: translate(2px, 1px);
+        }
+        96% {
+          transform: translate(-1px, -1px);
+        }
+        100% {
+          transform: translate(0, 0);
+        }
+      }
+
+      /* Le mouvement s'arrête, la panne reste : le nombre garde son
+         dédoublement, la déchirure une tranche figée, le semis sa position
+         de départ. Une page qui tremble en boucle est autrement plus
+         gênante qu'un survol, et celle-ci s'affiche sans qu'on l'ait
+         demandée. */
+      @media (prefers-reduced-motion: reduce) {
+        .nombre,
+        .nombre::after,
+        .phrase,
+        .retour,
+        .panne::after {
+          animation: none;
+        }
+
+        .nombre {
+          filter: drop-shadow(3px 0 #f44336) drop-shadow(-3px 0 #eddd6e);
+        }
+
+        .nombre::after {
+          color: var(--rouge);
+          clip-path: inset(43% 0 41% 0);
+          transform: translate(7px, 0);
+        }
+
+        .panne::after {
+          opacity: 0.55;
+        }
+      }
+
+      .bascule {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.9em;
+        height: 2.9em;
+        padding: 0;
+        font: inherit;
+        font-size: 0.9rem;
+        background: none;
+        border: none;
+        color: var(--gris);
+        cursor: pointer;
+        transition: color 0.18s;
+      }
+
+      .bascule:hover,
+      .bascule:focus-visible {
+        color: var(--rouge);
+        outline: none;
+      }
+
+      .bascule svg {
+        width: 1.4em;
+        height: 1.4em;
+      }
+
+      .bascule .soleil {
+        display: none;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .bascule .soleil {
+          display: block;
+        }
+        :root:not([data-theme="light"]) .bascule .lune {
+          display: none;
+        }
+      }
+
+      :root[data-theme="dark"] .bascule .soleil {
+        display: block;
+      }
+
+      :root[data-theme="dark"] .bascule .lune {
+        display: none;
+      }
+
+      :root[data-theme="light"] .bascule .soleil {
+        display: none;
+      }
+
+      :root[data-theme="light"] .bascule .lune {
+        display: block;
+      }
+
+      footer {
+        position: absolute;
+        bottom: 2rem;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.6rem;
+        padding: 0 1.5rem;
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--gris);
+      }
+
+      footer p {
+        margin: 0;
+      }
+
+      footer p + p::before {
+        content: "#";
+        margin-right: 0.6rem;
+        font-weight: 700;
+        font-size: 0.9em;
+        color: color-mix(in srgb, var(--rouge) 55%, transparent);
+      }
+
+      footer a {
+        color: var(--gris);
+        text-decoration: none;
+        border-bottom: 1px solid color-mix(in srgb, var(--gris) 45%, transparent);
+      }
+
+      footer a:hover {
+        color: var(--rouge);
+        border-bottom-color: var(--rouge);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="panne">
+      <div class="nombre" aria-hidden="true">404</div>
+      <h1 class="phrase">Cette page existera peut-être dans le futur.</h1>
+      <a class="retour" href="/">En attendant, je retourne dans le passé.</a>
+    </div>
+
+    <button class="bascule" type="button" aria-label="Basculer entre le thème clair et le thème sombre">
+      <svg
+        class="soleil"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="4.2" />
+        <path
+          d="M12 2v2.6M12 19.4V22M4.2 4.2l1.9 1.9M17.9 17.9l1.9 1.9M2 12h2.6M19.4 12H22M4.2 19.8l1.9-1.9M17.9 6.1l1.9-1.9"
+        />
+      </svg>
+      <svg
+        class="lune"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" />
+      </svg>
+    </button>
+
+    <footer>
+      <p>© 2026</p>
+      <p><a href="mailto:florian@egonux.com">Florian</a></p>
+    </footer>
+
+    <script>
+      document.querySelector(".bascule").addEventListener("click", function () {
+        var racine = document.documentElement
+        var sombre = racine.dataset.theme
+          ? racine.dataset.theme === "dark"
+          : window.matchMedia("(prefers-color-scheme: dark)").matches
+        var voulu = sombre ? "light" : "dark"
+        racine.dataset.theme = voulu
+        try {
+          localStorage.setItem("theme", voulu)
+        } catch (e) {}
+      })
+    </script>
+  </body>
+</html>
