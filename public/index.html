@@ -33,32 +33,29 @@
       }
 
       :root {
-        --papier: #fafafa;
-        --encre: #212121;
-        --rouge: #d32f2f;
-        --gris: #8c8578;
-        --anthracite: #38352f;
-        --rouge-vif: #f44336;
+        --papier: #fbf6ec;
+        --encre: #1a1613;
+        --safran: #f26b1d;
+        --gris: #8a8176;
+        --anthracite: #33302a;
       }
 
       @media (prefers-color-scheme: dark) {
         :root:not([data-theme="light"]) {
-          --papier: #1c1b19;
-          --encre: #f6ece0;
-          --rouge: #f4675c;
-          --gris: #7d786d;
-          --anthracite: #ded8cc;
-          --rouge-vif: #f4675c;
+          --papier: #171311;
+          --encre: #f5eee2;
+          --safran: #f26b1d;
+          --gris: #948a7d;
+          --anthracite: #d8cfc1;
         }
       }
 
       :root[data-theme="dark"] {
-        --papier: #1c1b19;
-        --encre: #f6ece0;
-        --rouge: #f4675c;
-        --gris: #7d786d;
-        --anthracite: #ded8cc;
-        --rouge-vif: #f4675c;
+        --papier: #171311;
+        --encre: #f5eee2;
+        --safran: #f26b1d;
+        --gris: #948a7d;
+        --anthracite: #d8cfc1;
       }
 
       * {
@@ -103,12 +100,12 @@
       }
 
       .logo b {
-        color: var(--rouge);
+        color: var(--safran);
         font-weight: 700;
       }
 
       .logo:focus-visible {
-        outline: 2px solid var(--rouge);
+        outline: 2px solid var(--safran);
         outline-offset: 0.35em;
         border-radius: 2px;
       }
@@ -124,34 +121,31 @@
       }
 
       .logo .section {
-        font-weight: 400;
         font-size: 0.56em;
-        letter-spacing: 0.08em;
-        color: var(--anthracite);
 
         width: fit-content;
-        margin: 0.1em calc(0.58em / 0.56) 0 auto;
+        margin: 0.15em calc(0.58em / 0.56 - 0.45em) 0 auto;
 
-        --surlignage: color-mix(in srgb, var(--rouge-vif) 60%, transparent);
+        /* La section en étiquette safran pleine, texte au noir de la page :
+           l'encre sur papier, le fond lui-même sur thème sombre. C'est la
+           construction de {fablab} sur ses deux sites. Le remplissage
+           horizontal est retranché de la marge pour que ce soit le texte,
+           et non le bloc, qui s'aligne sous la dernière lettre du nom. */
         line-height: 1;
-        background-image: linear-gradient(
-          180deg,
-          transparent 14%,
-          var(--surlignage) 14%,
-          var(--surlignage) 86%,
-          transparent 86%
-        );
+        padding: 0.14em 0.45em 0.1em;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: var(--encre);
+        background-color: var(--safran);
       }
 
       @media (prefers-color-scheme: dark) {
         :root:not([data-theme="light"]) .logo .section {
-          --surlignage: var(--rouge-vif);
           color: var(--papier);
         }
       }
 
       :root[data-theme="dark"] .logo .section {
-        --surlignage: var(--rouge-vif);
         color: var(--papier);
       }
 
@@ -173,7 +167,7 @@
 
       .bascule:hover,
       .bascule:focus-visible {
-        color: var(--rouge);
+        color: var(--encre);
         outline: none;
       }
 
@@ -215,7 +209,7 @@
         font-size: clamp(2.1rem, 7vw, 3.5rem);
         font-weight: 700;
         line-height: 1;
-        color: var(--rouge);
+        color: var(--safran);
         -webkit-text-stroke: 0.055em currentColor;
         paint-order: stroke fill;
         user-select: none;
@@ -237,7 +231,7 @@
       }
 
       :root[data-theme="light"] .glyphe {
-        color: var(--rouge);
+        color: var(--safran);
       }
 
       @keyframes soubresaut {
@@ -305,7 +299,7 @@
         margin-right: 0.6rem;
         font-weight: 700;
         font-size: 0.9em;
-        color: color-mix(in srgb, var(--rouge) 55%, transparent);
+        color: var(--safran);
       }
 
       footer a {
@@ -315,8 +309,8 @@
       }
 
       footer a:hover {
-        color: var(--rouge);
-        border-bottom-color: var(--rouge);
+        color: var(--encre);
+        border-bottom: 2px solid var(--safran);
       }
     </style>
   </head>

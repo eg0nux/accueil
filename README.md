@@ -27,9 +27,11 @@ le jeton d'API Cloudflare pour automatiser une page qui bouge deux fois l'an.
 
 ## Charte
 
-Reprise de `fablab.egonux.com` : **JetBrains Mono**, encre `#212121` sur
-papier `#fafafa`, rouge `#d32f2f` en accent, crème `#f6ece0` sur `#1c1b19` en
-thème sombre. Les trois logotypes sont traités à l'identique — ni cadre, ni
+Reprise de `fablab.egonux.com`, charte Sérigraphie : **JetBrains Mono**,
+encre `#1a1613` sur papier crème `#fbf6ec`, safran `#f26b1d` en seconde encre
+— toujours en fond, jamais en texte —, crème `#f5eee2` sur `#171311` en thème
+sombre. La section de chaque logotype est une étiquette safran pleine, texte
+au noir de la page. Les trois logotypes sont traités à l'identique — ni cadre, ni
 aplat, ni réaction au survol : rien ne doit hiérarchiser trois pans d'une même
 maison. Ils s'alignent par la droite, accolades fermantes sur une verticale,
 le bloc restant centré dans la page.
